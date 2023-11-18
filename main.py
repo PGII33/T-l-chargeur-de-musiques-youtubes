@@ -19,7 +19,6 @@ def verify_link(link:str):
         if link[:29] == 'https://www.youtube.com/watch':
             return link
 
-
 # Get The music of the link
 def get_music(link):
     ''' Download the music from a link '''
@@ -30,7 +29,7 @@ def get_music(link):
         print('link must be a youtube link')
     yt = YouTube(link)
     print(yt.title + ' is downloading...')
-    audio_file = yt.streams.filter(only_audio=True).first().download()
+    audio_file = yt.streams.filter(only_audio=True).first().download('Musics_Downloads')
     base = os.path.splitext(audio_file)[0]
     new_file = base + '.mp3'
     os.rename(audio_file, new_file)
@@ -43,7 +42,7 @@ def get_video(link) -> None:
     assert isinstance(link, str), 'link must be a string'
     yt = YouTube(link)
     print(yt.title + ' is downloading...')
-    video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download() # pylint: disable=line-too-long
+    video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download('Musics_Downloads') # pylint: disable=line-too-long
     print(yt.title + ' is downloaded')
     return video_file
 

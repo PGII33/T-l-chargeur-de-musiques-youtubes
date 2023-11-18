@@ -3,9 +3,13 @@ import os
 from pytube import YouTube
 from pytube import Playlist
 
-RUNNING = True
+RUNNING = False
 
+BG_ENTRY_COULEUR = '#000000'
+BG_COULEUR = '#8F8F8F'
+FG_COULEUR = '#FFFFFF'
 
+v_choose = 0
 
 def verify_link(link:str):
     ''' Verify if the link is a string \n
@@ -100,4 +104,24 @@ while RUNNING :
         except :
             print("Erreur")
 
-print(verify_link('https://music.youtube.com/watch?v=aUCxD1xX6fU'))
+# Here is for the GUI
+from tkinter import *
+
+window = Tk()
+window.title("Youtube downloader")
+window.geometry("720x480")
+window.minsize(480, 360)
+
+# Create the main frame
+main_frame = Frame(window, bg=BG_COULEUR)
+main_frame.pack(expand=YES, fill=BOTH)
+
+# Create the title label
+label_title = Label(main_frame, text="Youtube downloader", font=("Arial", 40), bg=BG_COULEUR, fg=FG_COULEUR)
+label_title.pack()
+
+# Create the link entry
+link_entry = Entry(main_frame, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR)
+link_entry.pack()
+
+window.mainloop()

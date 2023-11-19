@@ -74,6 +74,18 @@ def get_video_from_playlist(link:str) -> None:
         print(str(counter) + ' ' + urls + ' is downloaded')
         counter += 1
 
+def button_action()-> None:
+    ''' Get the link and the choice of the user and download the music or the video '''
+    link = link_entry.get()
+    if v_choose == 0:
+        get_music(link)
+    elif v_choose == 1:
+        get_video(link)
+    elif v_choose == 2:
+        get_music_from_playlist(link)
+    elif v_choose == 3:
+        get_video_from_playlist(link)
+
 print("Bienvenue dans le programme de téléchargement de musique et de vidéo \n")
 # Here is for cmd
 while RUNNING :
@@ -123,5 +135,16 @@ label_title.pack()
 # Create the link entry
 link_entry = Entry(main_frame, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR)
 link_entry.pack()
+
+# Create the choice button
+choice_music = Radiobutton(main_frame, text="Music", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=0)
+choice_video = Radiobutton(main_frame, text="Video", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=1)
+choice_music_playlist = Radiobutton(main_frame, text="Music playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=2)
+choice_video_playlist = Radiobutton(main_frame, text="Video playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=3)
+choice_music.pack()
+choice_video.pack()
+choice_music_playlist.pack()
+choice_video_playlist.pack()
+
 
 window.mainloop()

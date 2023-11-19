@@ -21,6 +21,10 @@ window.minsize(480, 360)
 v_choose = IntVar()
 entry_var = StringVar()
 
+def label_resizing(text:str)->str:
+    if len(text) > 20:
+        return text[:50] + '\n' + text[50:]
+
 def verify_link(link:str):
     ''' Verify if the link is a string \n
     Return the link if it's a youtube or a youtube music link '''
@@ -46,7 +50,7 @@ def get_music(link):
     # Actualisation of the label
     if label_download is not None:
         label_text = yt.title + ' is downloading...'
-        label_download.config(text=label_text)
+        label_download.config(text=label_resizing(label_text))
     audio_file = yt.streams.filter(only_audio=True).first().download('Musics_Downloads')
     base = os.path.splitext(audio_file)[0]
     new_file = base + '.mp3'
@@ -54,7 +58,7 @@ def get_music(link):
     print(yt.title + ' is downloaded')
     if label_download != None:
         label_text = yt.title + ' is downloaded'
-        label_download.config(text=label_text)
+        label_download.config(text=label_resizing(label_text))
     return new_file
 
 # Get the vido of the link
@@ -66,12 +70,12 @@ def get_video(link) -> None:
     if label_download != None:
         
         label_text = yt.title + ' is downloading...'
-        label_download.config(text=label_text)
+        label_download.config(text=label_resizing(label_text))
     video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download('Musics_Downloads') # pylint: disable=line-too-long
     print(yt.title + ' is downloaded')
     if label_download != None:
         label_text = yt.title + ' is downloading...'
-        label_download.config(text=label_text)
+        label_download.config(text=label_resizing(label_text))
     return video_file
 
 # Get the music playlist of the link

@@ -9,8 +9,6 @@ BG_ENTRY_COULEUR = '#000000'
 BG_COULEUR = '#8F8F8F'
 FG_COULEUR = '#FFFFFF'
 
-v_choose = 0
-
 def verify_link(link:str):
     ''' Verify if the link is a string \n
     Return the link if it's a youtube or a youtube music link '''
@@ -77,13 +75,13 @@ def get_video_from_playlist(link:str) -> None:
 def button_action()-> None:
     ''' Get the link and the choice of the user and download the music or the video '''
     link = link_entry.get()
-    if v_choose == 0:
+    if v_choose.get() == 0:
         get_music(link)
-    elif v_choose == 1:
+    elif v_choose.get() == 1:
         get_video(link)
-    elif v_choose == 2:
+    elif v_choose.get() == 2:
         get_music_from_playlist(link)
-    elif v_choose == 3:
+    elif v_choose.get() == 3:
         get_video_from_playlist(link)
 
 print("Bienvenue dans le programme de téléchargement de musique et de vidéo \n")
@@ -124,6 +122,9 @@ window.title("Youtube downloader")
 window.geometry("720x480")
 window.minsize(480, 360)
 
+v_choose = IntVar()
+entry_var = StringVar()
+
 # Create the main frame
 main_frame = Frame(window, bg=BG_COULEUR)
 main_frame.pack(expand=YES, fill=BOTH)
@@ -133,7 +134,7 @@ label_title = Label(main_frame, text="Youtube downloader", font=("Arial", 40), b
 label_title.pack()
 
 # Create the link entry
-link_entry = Entry(main_frame, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR)
+link_entry = Entry(main_frame, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, textvariable= entry_var)
 link_entry.pack()
 
 # Create the choice button
@@ -146,5 +147,8 @@ choice_video.pack()
 choice_music_playlist.pack()
 choice_video_playlist.pack()
 
+# Create the button
+button = Button(main_frame, text="Download", font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, command=button_action)
+button.pack()
 
 window.mainloop()

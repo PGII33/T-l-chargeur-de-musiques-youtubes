@@ -4,7 +4,7 @@ from pytube import YouTube
 from pytube import Playlist
 from tkinter import *
 
-RUNNING = False
+RUNNING = True
 
 BG_ENTRY_COULEUR = '#000000'
 BG_COULEUR = '#8F8F8F'
@@ -118,46 +118,46 @@ def button_action()-> None:
 
 print("Bienvenue dans le programme de téléchargement de musique et de vidéo \n")
 
-# Create the main frame
-main_frame = Frame(window, bg=BG_COULEUR)
-main_frame.pack(expand=YES, fill=BOTH)
+# # Create the main frame
+# main_frame = Frame(window, bg=BG_COULEUR)
+# main_frame.pack(expand=YES, fill=BOTH)
 
-# Create the title label
-label_title = Label(main_frame, text="Youtube downloader", font=("Arial", 40), bg=BG_COULEUR, fg=FG_COULEUR)
-label_title.pack()
+# # Create the title label
+# label_title = Label(main_frame, text="Youtube downloader", font=("Arial", 40), bg=BG_COULEUR, fg=FG_COULEUR)
+# label_title.pack()
 
-# Create the link entry
-link_entry = Entry(main_frame, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, textvariable= entry_var)
-link_entry.pack()
+# # Create the link entry
+# link_entry = Entry(main_frame, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, textvariable= entry_var)
+# link_entry.pack()
 
-# Create the choice button
-choice_music = Radiobutton(main_frame, text="Music", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=0)
-choice_video = Radiobutton(main_frame, text="Video", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=1)
-choice_music_playlist = Radiobutton(main_frame, text="Music playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=2)
-choice_video_playlist = Radiobutton(main_frame, text="Video playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=3)
-choice_music.pack()
-choice_video.pack()
-choice_music_playlist.pack()
-choice_video_playlist.pack()
+# # Create the choice button
+# choice_music = Radiobutton(main_frame, text="Music", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=0)
+# choice_video = Radiobutton(main_frame, text="Video", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=1)
+# choice_music_playlist = Radiobutton(main_frame, text="Music playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=2)
+# choice_video_playlist = Radiobutton(main_frame, text="Video playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=3)
+# choice_music.pack()
+# choice_video.pack()
+# choice_music_playlist.pack()
+# choice_video_playlist.pack()
 
-# Create the button
-button = Button(main_frame, text="Download", font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, command=button_action)
-button.pack()
+# # Create the button
+# button = Button(main_frame, text="Download", font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, command=button_action)
+# button.pack()
 
-# Create label for the download
-label_download = Label(main_frame, text=label_text, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR)
-label_download.pack()
+# # Create label for the download
+# label_download = Label(main_frame, text=label_text, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR)
+# label_download.pack()
 
-window.mainloop()
+# window.mainloop()
 
 # Here is for cmd
 while RUNNING :
     choose = int(input("Choisissez l'option \n"+
                     "0 - Arreter le programme \n"+
-                    "1 - Télécharger une musique \n"+
-                    "2 - Télécharger une playlist de musique \n"+
-                    "3 - Télécharger une vidéo \n"+
-                    "4 - Télécharger une playlist de vidéo \n"))
+                    "1 - Telecharger une musique \n"+
+                    "2 - Telecharger une playlist de musique \n"+
+                    "3 - Telecharger une vidéo \n"+
+                    "4 - Telecharger une playlist de vidéo \n"))
     if choose == 0:
         RUNNING = False
     elif choose == 1:

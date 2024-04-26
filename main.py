@@ -72,7 +72,8 @@ def get_video(link) -> None:
         
         label_text = yt.title + ' is downloading...'
         label_download.config(text=label_resizing(label_text))
-    video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download('Musics_Downloads') # pylint: disable=line-too-long
+    target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Musics_Download'))
+    video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download(target_directory) # pylint: disable=line-too-long
     print(yt.title + ' is downloaded')
     if label_download != None:
         label_text = yt.title + ' is downloading...'

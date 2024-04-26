@@ -13,13 +13,13 @@ FG_COULEUR = '#FFFFFF'
 label_text = 'Welcome to the youtube downloader'
 label_download = None
 
-window = Tk()
-window.title("Youtube downloader")
-window.geometry("720x480")
-window.minsize(480, 360)
+# window = Tk()
+# window.title("Youtube downloader")
+# window.geometry("720x480")
+# window.minsize(480, 360)
 
-v_choose = IntVar()
-entry_var = StringVar()
+# v_choose = IntVar()
+# entry_var = StringVar()
 
 def label_resizing(text:str)->str:
     if len(text) > 20:
@@ -51,7 +51,8 @@ def get_music(link):
     if label_download is not None:
         label_text = yt.title + ' is downloading...'
         label_download.config(text=label_resizing(label_text))
-    audio_file = yt.streams.filter(only_audio=True).first().download('Musics_Downloads')
+    target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Musics_Download'))
+    audio_file = yt.streams.filter(only_audio=True).first().download(target_directory)
     base = os.path.splitext(audio_file)[0]
     new_file = base + '.mp3'
     os.rename(audio_file, new_file)
@@ -83,7 +84,7 @@ def get_music_from_playlist(link):
     ''' Download the music from a playlist '''
     assert isinstance(link, str), 'link must be a string'
     playlist = Playlist(link)
-    counter = 0
+    counter = 1
     for urls in playlist.video_urls:
         print(str(counter) + ' ' + urls + ' is downloading...')
         get_music(urls)
@@ -153,16 +154,28 @@ print("Bienvenue dans le programme de téléchargement de musique et de vidéo \
 # Here is for cmd
 while RUNNING :
     choose = int(input("Choisissez l'option \n"+
-                    "0 - Arreter le programme \n"+
-                    "1 - Telecharger une musique \n"+
-                    "2 - Telecharger une playlist de musique \n"+
-                    "3 - Telecharger une vidéo \n"+
-                    "4 - Telecharger une playlist de vidéo \n"))
+                    "0 - Arrêter le programme \n"+
+                    "1 - Télécharger une musique \n"+
+                    "2 - Télécharger une playlist de musique \n"+
+                    "3 - Télécharger une vidéo \n"+
+                    "4 - Télécharger une playlist de vidéo \n"))
     if choose == 0:
         RUNNING = False
     elif choose == 1:
         LINK = str(input("Entrez le lien de la musique : "))
-        get_music(LINK)
+        os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+        print("Current working directory:", os.getcwd())
+        print("hey")
+        try:
+            file_path = get_music(LINK)
+            print("Le fichier a été enregistré avec succès sous cette adresse : ", file_path)
+        except AssertionError as e:
+            print(e)
+        except Exception as e:
+            print("Une erreur imprévue s'est produite :", e)
+        finally:
+            os.chdir(os.path.abspath(os.curdir))
+        print()
     elif choose == 2:
         LINK = str(input("Entrez le lien de la playlist : "))
         get_music_from_playlist(LINK)
@@ -174,7 +187,9 @@ while RUNNING :
         LINK = str(input("Entrez le lien de la playlist : "))
         get_video_from_playlist(LINK)
     elif choose == 5:
-        try :
+        try:
             get_music(a)
-        except :
+        except:
             print("Erreur")
+
+input("Appuyez sur une touche pour quitter")

@@ -6,51 +6,62 @@ from tkinter import *
 
 RUNNING = True
 
-BG_ENTRY_COULEUR = '#000000'
-BG_COULEUR = '#8F8F8F'
-FG_COULEUR = '#FFFFFF'
-
-label_text = 'Welcome to the youtube downloader'
-label_download = None
-
-# window = Tk()
-# window.title("Youtube downloader")
-# window.geometry("720x480")
-# window.minsize(480, 360)
-
-# v_choose = IntVar()
-# entry_var = StringVar()
-
-def label_resizing(text:str)->str:
-    if len(text) > 20:
-        return text[:50] + '\n' + text[50:]
-
-def verify_link(link:str):
+def verify_link(link:str) -> str | bool:
     ''' Verify if the link is a string \n
-    Return the link if it's a youtube or a youtube music link '''
-    assert isinstance(link, str), 'link must be a string'
-    assert 'https://www.youtube.com/watch' in link or 'https://music.youtube.com/watch' in link, 'link must be a youtube link'
-    if link[:29] == 'https://www.youtube.com/watch':
-        return link
-    if 'https://music.youtube.com/watch' in link:
-        link = link.replace('music.', 'www.')
+    Return the link if it's a youtube or a youtube music link  \n
+    Return False if it's not a youtube or a youtube music link'''
+
+    # Vérification du type de la variable link
+    try:
+        isinstance(link, str)
+    except AssertionError:
+        print('Le lien doit être une chaîne de caractères')
+        return False
+
+    # Vérification du lien
+    try:
+        assert 'https://www.youtube.com/watch' in link or 'https://music.youtube.com/watch' in link
+    except AssertionError:
+        print('Le lien doit être un lien youtube ou youtube music')
+        return False
+
+    # Transformation du lien music en lien youtube
+    try:
+        assert link[:29] == 'https://www.youtube.com/watch' or 'https://music.youtube.com/watch' in link
         if link[:29] == 'https://www.youtube.com/watch':
             return link
+        if 'https://music.youtube.com/watch' in link:
+            link = link.replace('music.', 'www.')
+            if link[:29] == 'https://www.youtube.com/watch':
+                return link
+    except AssertionError:
+        print('Le lien doit être un lien youtube ou youtube music')
+        return False
 
 # Get The music of the link
-def get_music(link):
-    ''' Download the music from a link '''
-    assert isinstance(link, str), 'link must be a string'
-    try :
-        verify_link(link)
-    except :
-        print('link must be a youtube link')
+def get_music(link) -> str | bool:
+    ''' Download the music from a link \n
+    Return the path of the music if it's downloaded \n
+    Return False if it's not'''
+
+    # Vérification du type de la variable link
+    try:
+        assert isinstance(link, str)
+    except AssertionError:
+        print('link must be a string')
+        return False
+
+    # Vérification du lien
+    try:
+        assert isinstance(verify_link(link), str)
+    except AssertionError:
+        print("Lien non valide")
+        return False
+
+    # Téléchargement de la musique
     yt = YouTube(link)
     print(yt.title + ' is downloading...')
-    # Actualisation of the label
-    if label_download is not None:
-        label_text = yt.title + ' is downloading...'
-        label_download.config(text=label_resizing(label_text))
+
     target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Musics_Download'))
     audio_file = yt.streams.filter(only_audio=True).first().download(target_directory)
     base = os.path.splitext(audio_file)[0]
@@ -120,55 +131,30 @@ def button_action()-> None:
 
 print("Bienvenue dans le programme de téléchargement de musique et de vidéo \n")
 
-# # Create the main frame
-# main_frame = Frame(window, bg=BG_COULEUR)
-# main_frame.pack(expand=YES, fill=BOTH)
-
-# # Create the title label
-# label_title = Label(main_frame, text="Youtube downloader", font=("Arial", 40), bg=BG_COULEUR, fg=FG_COULEUR)
-# label_title.pack()
-
-# # Create the link entry
-# link_entry = Entry(main_frame, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, textvariable= entry_var)
-# link_entry.pack()
-
-# # Create the choice button
-# choice_music = Radiobutton(main_frame, text="Music", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=0)
-# choice_video = Radiobutton(main_frame, text="Video", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=1)
-# choice_music_playlist = Radiobutton(main_frame, text="Music playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=2)
-# choice_video_playlist = Radiobutton(main_frame, text="Video playlist", font=("Arial", 20), bg=BG_COULEUR, variable=v_choose, value=3)
-# choice_music.pack()
-# choice_video.pack()
-# choice_music_playlist.pack()
-# choice_video_playlist.pack()
-
-# # Create the button
-# button = Button(main_frame, text="Download", font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR, command=button_action)
-# button.pack()
-
-# # Create label for the download
-# label_download = Label(main_frame, text=label_text, font=("Arial", 20), bg=BG_COULEUR, fg=FG_COULEUR)
-# label_download.pack()
-
-# window.mainloop()
-
 # Here is for cmd
 while RUNNING :
-    choose = int(input("Choisissez l'option \n"+
+    choose = input("Choisissez l'option \n"+
                     "0 - Arrêter le programme \n"+
                     "1 - Télécharger une musique \n"+
                     "2 - Télécharger une playlist de musique \n"+
                     "3 - Télécharger une vidéo \n"+
-                    "4 - Télécharger une playlist de vidéo \n"))
+                    "4 - Télécharger une playlist de vidéo \n")
+
+    print("\n")
+
+    try:
+        choose = int(choose)
+    except ValueError:
+        print("Veuillez entrer un nombre valide")
+        continue
     if choose == 0:
         RUNNING = False
     elif choose == 1:
         LINK = str(input("Entrez le lien de la musique : "))
         os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-        print("Current working directory:", os.getcwd())
-        print("hey")
         try:
             file_path = get_music(LINK)
+            assert file_path is not False
             print("Le fichier a été enregistré avec succès sous cette adresse : ", file_path)
         except AssertionError as e:
             print(e)
@@ -187,10 +173,6 @@ while RUNNING :
     elif choose == 4:
         LINK = str(input("Entrez le lien de la playlist : "))
         get_video_from_playlist(LINK)
-    elif choose == 5:
-        try:
-            get_music(a)
-        except:
-            print("Erreur")
-
-input("Appuyez sur une touche pour quitter")
+    else:
+        print("Veuillez entrer un nombre valide")
+        continue

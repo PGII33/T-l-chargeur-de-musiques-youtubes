@@ -1,6 +1,6 @@
 " This file is the main file of the project (and the only one) "
 import os
-from YT.yt_dl import *
+from YT.yt_dl import get_music, get_music_from_playlist, get_video, get_video_from_playlist
 
 if __name__ == "__main__":
     RUNNING = True
@@ -29,9 +29,9 @@ if __name__ == "__main__":
             LINK = str(input("Entrez le lien de la musique : "))
             os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
             try:
-                file_path = get_music(LINK)
-                assert file_path is not False
-                print("Le fichier a été enregistré avec succès sous cette adresse : ", file_path)
+                FILE_PATH = get_music(LINK)
+                assert FILE_PATH is not False
+                print("Le fichier a été enregistré avec succès sous cette adresse : ", FILE_PATH)
             except AssertionError as e:
                 print(e)
             except Exception as e:

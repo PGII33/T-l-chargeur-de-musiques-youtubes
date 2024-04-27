@@ -39,9 +39,9 @@ def verify_link(link:str) -> str | bool:
         return False
 
 # Get The music of the link
-def get_music(link) -> str | bool:
+def get_music(link) -> bool:
     ''' Download the music from a link \n
-    Return the path of the music if it's downloaded \n
+    Return True if it's downloaded \n
     Return False if it's not'''
 
     # Vérification du type de la variable link
@@ -65,13 +65,22 @@ def get_music(link) -> str | bool:
     target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Musics_Download'))
     audio_file = yt.streams.filter(only_audio=True).first().download(target_directory)
     base = os.path.splitext(audio_file)[0]
-    new_file = base + '.mp3'
-    os.rename(audio_file, new_file)
+
+    # Conversion du fichier audio en mp3
+    try:
+        os.rename(audio_file, base + '.mp3')
+    except FileExistsError:
+        value = 1
+        while True:
+            try:
+                os.rename(audio_file, base + ' (' + str(value) + ') ' + '.mp3')
+                break
+            except FileExistsError:
+                value += 1
+                continue
+
     print(yt.title + ' is downloaded')
-    if label_download != None:
-        label_text = yt.title + ' is downloaded'
-        label_download.config(text=label_resizing(label_text))
-    return new_file
+    return True
 
 # Get the vido of the link
 def get_video(link) -> None:
@@ -79,16 +88,9 @@ def get_video(link) -> None:
     assert isinstance(link, str), 'link must be a string'
     yt = YouTube(link)
     print(yt.title + ' is downloading...')
-    if label_download != None:
-        
-        label_text = yt.title + ' is downloading...'
-        label_download.config(text=label_resizing(label_text))
     target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Musics_Download'))
     video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download(target_directory) # pylint: disable=line-too-long
     print(yt.title + ' is downloaded')
-    if label_download != None:
-        label_text = yt.title + ' is downloading...'
-        label_download.config(text=label_resizing(label_text))
     return video_file
 
 # Get the music playlist of the link

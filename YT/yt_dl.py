@@ -60,7 +60,7 @@ def get_music(link) -> bool:
     yt = YouTube(link)
     print(yt.title + ' is downloading...')
 
-    target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Musics_Download'))
+    target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Musics_Download'))
     audio_file = yt.streams.filter(only_audio=True).first().download(target_directory)
     base = os.path.splitext(audio_file)[0]
 

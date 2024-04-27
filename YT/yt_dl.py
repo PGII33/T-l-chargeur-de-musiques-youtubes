@@ -1,4 +1,5 @@
 ''' Code that will procure us the option to download from youtube '''
+import os
 from pytube import YouTube
 from pytube import Playlist
 
@@ -113,4 +114,3 @@ def get_video_from_playlist(link:str) -> None:
         get_video(urls)
         print(str(counter) + ' ' + urls + ' is downloaded')
         counter += 1
-

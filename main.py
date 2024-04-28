@@ -8,13 +8,13 @@ if __name__ == "__main__":
     print("Bienvenue dans le programme de téléchargement de musique et de vidéo \n")
 
     # Here is for cmd
-    while RUNNING :
-        choose = input("Choisissez l'option \n"+
-                        "0 - Arrêter le programme \n"+
-                        "1 - Télécharger une musique \n"+
-                        "2 - Télécharger une playlist de musique \n"+
-                        "3 - Télécharger une vidéo \n"+
-                        "4 - Télécharger une playlist de vidéo \n")
+    while RUNNING:
+        choose = input("Choisissez l'option \n" +
+                       "0 - Arrêter le programme \n" +
+                       "1 - Télécharger une musique \n" +
+                       "2 - Télécharger une playlist de musique \n" +
+                       "3 - Télécharger une vidéo \n" +
+                       "4 - Télécharger une playlist de vidéo \n")
 
         print("\n")
 
@@ -31,7 +31,6 @@ if __name__ == "__main__":
             try:
                 FILE_PATH = get_music(LINK)
                 assert FILE_PATH is not False
-                print("Le fichier a été enregistré avec succès sous cette adresse : ", FILE_PATH)
             except AssertionError as e:
                 print(e)
             except Exception as e:

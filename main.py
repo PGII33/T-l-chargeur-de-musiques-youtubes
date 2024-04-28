@@ -37,7 +37,6 @@ if __name__ == "__main__":
                 print("Une erreur imprévue s'est produite :", e)
             finally:
                 os.chdir(os.path.abspath(os.curdir))
-            print()
         elif choose == 2:
             LINK = str(input("Entrez le lien de la playlist : "))
             get_music_from_playlist(LINK)

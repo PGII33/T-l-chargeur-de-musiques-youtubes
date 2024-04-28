@@ -39,14 +39,40 @@ if __name__ == "__main__":
                 os.chdir(os.path.abspath(os.curdir))
         elif choose == 2:
             LINK = str(input("Entrez le lien de la playlist : "))
-            get_music_from_playlist(LINK)
+            os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+            try:
+                FILE_PATH = get_music_from_playlist(LINK)
+                assert FILE_PATH is not False
+            except AssertionError as e:
+                print(e)
+            except Exception as e:
+                print("Une erreur imprévue s'est produite :", e)
+            finally:
+                os.chdir(os.path.abspath(os.curdir))
         elif choose == 3:
             LINK = str(input("Entrez le lien de la vidéo : "))
-            print(LINK)
-            get_video(LINK)
+            os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+            try:
+                FILE_PATH = get_video(LINK)
+                assert FILE_PATH is not False
+            except AssertionError as e:
+                print(e)
+            except Exception as e:
+                print("Une erreur imprévue s'est produite :", e)
+            finally:
+                os.chdir(os.path.abspath(os.curdir))
         elif choose == 4:
             LINK = str(input("Entrez le lien de la playlist : "))
-            get_video_from_playlist(LINK)
+            os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+            try:
+                FILE_PATH = get_video_from_playlist(LINK)
+                assert FILE_PATH is not False
+            except AssertionError as e:
+                print(e)
+            except Exception as e:
+                print("Une erreur imprévue s'est produite :", e)
+            finally:
+                os.chdir(os.path.abspath(os.curdir))
         else:
             print("Veuillez entrer un nombre valide")
             continue

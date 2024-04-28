@@ -141,13 +141,26 @@ def get_video(link) -> bool:
 
 
 # Get the video playlist of the link
-def get_video_from_playlist(link: str) -> None:
+def get_video_from_playlist(link: str) -> bool:
     """ Download the video from a playlist """
-    assert isinstance(link, str), 'link must be a string'
+    try:
+        isinstance(link, str)
+    except AssertionError:
+        print('link must be a link')
+        return False
+
     playlist = Playlist(link)
-    counter = 0
+    counter = 1
+    counter_total = 1
+
     for urls in playlist.video_urls:
         print(str(counter) + ' ' + urls + ' is downloading...')
-        get_video(urls)
-        print(str(counter) + ' ' + urls + ' is downloaded')
-        counter += 1
+        counter_total += 1
+        try:
+            get_video(urls)
+            counter += 1
+        except AssertionError:
+            print(f"The {counter_total} failed to download")
+
+    print(f"Successfuly download {counter} videos over {counter_total}")
+    return True

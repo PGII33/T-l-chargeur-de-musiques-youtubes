@@ -66,7 +66,7 @@ def get_music(link) -> bool:
 
     try:
         audio_file = yt.streams.filter(only_audio=True).first().download(target_directory)
-    finally:
+    except Exception:
         print("Ce lien youtube n'est pas valide ou non reconnu")
 
     base = os.path.splitext(audio_file)[0]
@@ -134,7 +134,7 @@ def get_video(link) -> bool:
     try:
         video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by(
         'resolution').desc().first().download(target_directory)  # pylint: disable=line-too-long
-    finally:
+    except Exception:
         print("Ce lien youtube n'est pas valide ou non reconnu")
     print(yt.title + ' is downloaded')
     return True

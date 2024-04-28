@@ -63,7 +63,12 @@ def get_music(link) -> bool:
     print(yt.title + ' is downloading...')
 
     target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Musics_Download'))
-    audio_file = yt.streams.filter(only_audio=True).first().download(target_directory)
+
+    try:
+        audio_file = yt.streams.filter(only_audio=True).first().download(target_directory)
+    finally:
+        print("Ce lien youtube n'est pas valide ou non reconnu")
+
     base = os.path.splitext(audio_file)[0]
 
     # Conversion du fichier audio en mp3
@@ -84,7 +89,7 @@ def get_music(link) -> bool:
 
 
 # Get the music playlist of the link
-def get_music_from_playlist(link) -> bool :
+def get_music_from_playlist(link) -> bool:
     """ Download the musics from a playlist """
     try:
         isinstance(link, str)
@@ -107,18 +112,32 @@ def get_music_from_playlist(link) -> bool :
     return True
 
 
-
 # Get the vido of the link
-def get_video(link) -> None:
+def get_video(link) -> bool:
     """ Download the video from a link """
-    assert isinstance(link, str), 'link must be a string'
+    try:
+        isinstance(link, str)
+    except AssertionError:
+        print("A Video link is needed")
+        return False
+
+    try:
+        assert isinstance(verify_link(link), str)
+    except AssertionError:
+        print("Lien non valide")
+        return False
+
     yt = YouTube(link)
     print(yt.title + ' is downloading...')
-    target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Musics_Download'))
-    video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by(
+
+    target_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Video_Download'))
+    try:
+        video_file = yt.streams.filter(progressive=True, file_extension='mp4').order_by(
         'resolution').desc().first().download(target_directory)  # pylint: disable=line-too-long
+    finally:
+        print("Ce lien youtube n'est pas valide ou non reconnu")
     print(yt.title + ' is downloaded')
-    return video_file
+    return True
 
 
 # Get the video playlist of the link

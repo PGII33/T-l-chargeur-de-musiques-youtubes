@@ -84,16 +84,28 @@ def get_music(link) -> bool:
 
 
 # Get the music playlist of the link
-def get_music_from_playlist(link):
+def get_music_from_playlist(link) -> bool :
     """ Download the musics from a playlist """
-    assert isinstance(link, str), 'link must be a string'
+    try:
+        isinstance(link, str)
+    except AssertionError:
+        print('link must be a link')
+        return False
     playlist = Playlist(link)
     counter = 1
+    counter_total = 1
     for urls in playlist.video_urls:
         print(str(counter) + ' ' + urls + ' is downloading...')
-        get_music(urls)
-        print(str(counter) + ' ' + urls + ' is downloaded')
-        counter += 1
+        counter_total += 1
+        try:
+            get_music(urls)
+            counter += 1
+        except AssertionError:
+            print(f"The {counter_total} failed to download")
+
+    print(f"Successfuly download {counter} musics over {counter_total}")
+    return True
+
 
 
 # Get the vido of the link

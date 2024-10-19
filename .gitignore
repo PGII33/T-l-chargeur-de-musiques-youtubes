@@ -1,0 +1,6 @@
+# Ignore YT folder
+Musiques/
+# Ignore pycache
+YT/__pycache__/
+# Ignore python3.11
+python3.11

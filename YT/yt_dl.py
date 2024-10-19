@@ -17,12 +17,19 @@ def _download_and_convert(youtube_url, output_directory, noplaylist):
 
     # Télécharger le fichier audio
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        if noplaylist:
-            info = ydl.extract_info(youtube_url, download=False)
-            title = info['title']
+        if not noplaylist:
             ydl.download([youtube_url])
-            # Construire le nom du fichier téléchargé
-            downloaded_file = os.path.join(output_directory, f"{title}.webm")
+            downloaded_files = [os.path.join(output_directory, file) for file in os.listdir(output_directory) if file.endswith('.webm')]
+            for file in downloaded_files:
+                filename, file_extension = os.path.splitext(file)
+                new_filename = filename + '.mp3'
+                i = 1
+                while os.path.exists(new_filename):
+                    new_filename = f"{filename} ({i}){'.mp3'}"
+                    i += 1
+                os.rename(file, new_filename)
+                print(f"Fichier renommé en : {new_filename}")
+            return downloaded_files
         else:
             ydl.download([youtube_url])
             # Récupérer les chemins des fichiers téléchargés

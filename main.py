@@ -1,78 +1,35 @@
-" This file is the main file of the project (and the only one) "
 import os
-from YT.yt_dl import get_music, get_music_from_playlist, get_video, get_video_from_playlist
+import YT.yt_dl
 
 if __name__ == "__main__":
     RUNNING = True
 
     print("Bienvenue dans le programme de téléchargement de musique et de vidéo \n")
 
-    # Here is for cmd
     while RUNNING:
-        choose = input("Choisissez l'option \n" +
-                       "0 - Arrêter le programme \n" +
-                       "1 - Télécharger une musique \n" +
-                       "2 - Télécharger une playlist de musique \n" +
-                       "3 - Télécharger une vidéo \n" +
-                       "4 - Télécharger une playlist de vidéo \n")
+        choose = input("Choisissez l'option\n" +
+                       "0 - Arrêter le programme\n" +
+                       "1 - Télécharger une musique\n" +
+                       "2 - Télécharger une playlist de musique\n")
 
         print("\n")
 
         try:
             choose = int(choose)
-        except ValueError:
-            print("Veuillez entrer un nombre valide")
+        except ValueError or choose > 2 or choose < 0:
+            print("Veuillez entrer un nombre entre 0 et 2")
             continue
-        if choose == 0:
-            RUNNING = False
-        elif choose == 1:
-            LINK = str(input("Entrez le lien de la musique : "))
-            os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-            try:
-                FILE_PATH = get_music(LINK)
-                assert FILE_PATH is not False
-            except AssertionError as e:
-                print(e)
-            except Exception as e:
-                print("Une erreur imprévue s'est produite :", e)
-            finally:
-                os.chdir(os.path.abspath(os.curdir))
-        elif choose == 2:
-            LINK = str(input("Entrez le lien de la playlist : "))
-            os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-            try:
-                FILE_PATH = get_music_from_playlist(LINK)
-                assert FILE_PATH is not False
-            except AssertionError as e:
-                print(e)
-            except Exception as e:
-                print("Une erreur imprévue s'est produite :", e)
-            finally:
-                os.chdir(os.path.abspath(os.curdir))
-        elif choose == 3:
-            LINK = str(input("Entrez le lien de la vidéo : "))
-            os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-            try:
-                FILE_PATH = get_video(LINK)
-                assert FILE_PATH is not False
-            except AssertionError as e:
-                print(e)
-            except Exception as e:
-                print("Une erreur imprévue s'est produite :", e)
-            finally:
-                os.chdir(os.path.abspath(os.curdir))
-        elif choose == 4:
-            LINK = str(input("Entrez le lien de la playlist : "))
-            os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-            try:
-                FILE_PATH = get_video_from_playlist(LINK)
-                assert FILE_PATH is not False
-            except AssertionError as e:
-                print(e)
-            except Exception as e:
-                print("Une erreur imprévue s'est produite :", e)
-            finally:
-                os.chdir(os.path.abspath(os.curdir))
-        else:
-            print("Veuillez entrer un nombre valide")
-            continue
+
+        match choose:
+            case 0: #Exit the program
+                exit()
+            case 1: # Download a music
+                link = input("Lien de la musique youtube : ")
+                YT.yt_dl.dl_music(link, "./Musiques")
+                continue
+            case 2: # Download a playlist
+                link = input("Lien de la playlist youtube : ")
+                YT.yt_dl.dl_playlist(link, "./Musiques")
+            case default: # Reask for a valid number
+                print("Invalid Error")
+                exit()
